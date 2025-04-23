@@ -2,7 +2,6 @@ package AppointmentScheduling.Schedular_App.Entity;
 
 
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +10,7 @@ import java.util.Set;
 @Table(name="Users")
 public class User {
 
-    @jakarta.persistence.Id
+ @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id;
     private String username;
@@ -21,6 +20,11 @@ public class User {
     private Set<Role> roles=new HashSet<>();//Many users have multiple roles
 
     public User() {
+    }
+
+
+    public User(long id) {
+        Id = id;
     }
 
     public User(long id, String username, String password, Set<Role> roles) {

@@ -12,16 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class  AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
@@ -42,6 +40,7 @@ public class  AuthenticationController {
         this.passwordEncoder = passwordEncoder;
     }
 
+
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody UserRegisterRequest userRegisterRequest){
         if(userRepository.findByUsername(userRegisterRequest.getUsername()).isPresent()){
@@ -54,9 +53,15 @@ public class  AuthenticationController {
         newUser.setPassword(encodedPassword);
 
         Set<Role> roles=new HashSet<>();
-        for (String roleName:userRegisterRequest.getRoles()){
-          Role role=roleRepository.findByName(roleName).orElseThrow(()->new RuntimeException("Role not found:"+roleName));
-            roles.add(role);
+        if (userRegisterRequest.getRoles() == null || userRegisterRequest.getRoles().isEmpty()) {
+            Role defaultRole = roleRepository.findByName("USER")
+                    .orElseThrow(() -> new RuntimeException("Default role USER not found"));
+            roles.add(defaultRole);
+        } else {
+            for (String roleName : userRegisterRequest.getRoles()) {
+              Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RuntimeException("Role not found:" + roleName));
+                roles.add(role);
+            }
         }
         newUser.setRoles(roles);
         userRepository.save(newUser);
