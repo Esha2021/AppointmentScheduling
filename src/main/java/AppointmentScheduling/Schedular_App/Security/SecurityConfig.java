@@ -46,7 +46,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
         http.csrf(csrf -> csrf.disable())// Disable CSRF for stateless APIs
 
                 .authorizeHttpRequests(auth -> auth
@@ -54,12 +54,13 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/user/**").hasAuthority("USER")
                         .requestMatchers("/appointment/**").permitAll()
+                        .requestMatchers("/timeslot/**").permitAll()
                         .anyRequest().authenticated() // Protect all other endpoints
                 )
                 .sessionManagement(sess -> sess
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No sessions
                 )
-                .authenticationProvider(authenticationProvider(null) )// Custom authentication provider
+                .authenticationProvider(authenticationProvider(userDetailsService))
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())); // Add JWT filter
 

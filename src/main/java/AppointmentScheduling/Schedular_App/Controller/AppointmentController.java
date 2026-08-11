@@ -30,8 +30,10 @@ public class AppointmentController {
     }
 
     @GetMapping("/all")
-    public List<Appointment> getAllAppoitment(){
-        return appointmentRepository.findAll();
+    public List<AppointmentDTO> getAllAppoitment(){
+        return appointmentRepository.findAll().stream()
+                .map(AppointmentDTO::new)
+                .toList();
     }
 
 //    @PreAuthorize("hasAuthority('USER')")
