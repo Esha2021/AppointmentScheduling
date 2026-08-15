@@ -6,7 +6,6 @@ import AppointmentScheduling.Schedular_App.Entity.Role;
 import AppointmentScheduling.Schedular_App.Entity.User;
 import AppointmentScheduling.Schedular_App.Repository.RoleRepository;
 import AppointmentScheduling.Schedular_App.Repository.UserRepository;
-import AppointmentScheduling.Schedular_App.Security.JWTutil;
 import AppointmentScheduling.Schedular_App.Security.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
