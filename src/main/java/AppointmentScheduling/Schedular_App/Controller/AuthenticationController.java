@@ -7,7 +7,7 @@ import AppointmentScheduling.Schedular_App.Entity.Role;
 import AppointmentScheduling.Schedular_App.Entity.User;
 import AppointmentScheduling.Schedular_App.Repository.RoleRepository;
 import AppointmentScheduling.Schedular_App.Repository.UserRepository;
-import AppointmentScheduling.Schedular_App.Security.JWTutil;
+import AppointmentScheduling.Schedular_App.Security.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,7 +24,7 @@ public class  AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
 
-    private final JWTutil jwtutil;
+    private final JwtUtil jwtutil;
 
     private final UserRepository userRepository;
 
@@ -32,7 +32,7 @@ public class  AuthenticationController {
 
     private final PasswordEncoder passwordEncoder;
 
-    public  AuthenticationController(AuthenticationManager authenticationManager, JWTutil jwtutil, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public  AuthenticationController(AuthenticationManager authenticationManager, JwtUtil jwtutil, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.jwtutil = jwtutil;
         this.userRepository = userRepository;
@@ -77,7 +77,7 @@ public class  AuthenticationController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
                     (userLoginRequest.getUsername(), userLoginRequest.getPassword()));
         } catch (Exception e) {
-            System.out.println( e);
+            // Authentication failed - invalid credentials
         }
         String token=jwtutil.generateToken(userLoginRequest.getUsername());
         return ResponseEntity.ok(token);

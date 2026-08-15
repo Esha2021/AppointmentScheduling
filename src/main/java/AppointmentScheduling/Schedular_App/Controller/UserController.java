@@ -1,6 +1,6 @@
 package AppointmentScheduling.Schedular_App.Controller;
 
-import AppointmentScheduling.Schedular_App.Security.JWTutil;
+import AppointmentScheduling.Schedular_App.Security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import java.util.Set;
 public class  UserController {
 
     @Autowired
-    private JWTutil jwTutil;
+    private JwtUtil jwtUtil;
 
     @Value("${role.admin}")
     private String roleAdmin;
@@ -27,13 +27,13 @@ public class  UserController {
     private String roleUser;
 
      @GetMapping("/protected-data")
-     public ResponseEntity<String> getProtectdData(@RequestHeader("Authorization") String token){
+     public ResponseEntity<String> getProtectedData(@RequestHeader("Authorization") String token){
        if(token !=null &&token.startsWith("Bearer")){
            String jwtToken=token.substring(7);
            try{
-               if(jwTutil.isTokenValid(jwtToken)){
-                   String username= JWTutil.extractUsername(jwtToken);
-                   Set<String> roles=jwTutil.extractRoles(jwtToken);
+               if(jwtUtil.isTokenValid(jwtToken)){
+                   String username= jwtUtil.extractUsername(jwtToken);
+                   Set<String> roles= (Set<String>) jwtUtil.extractRoles(jwtToken);
                    if(roles.contains(roleAdmin)){
                        return ResponseEntity.ok("Welcome"+username+"here is the"+roles+"-specific data.");
                    }else if(roles.contains(roleUser)){

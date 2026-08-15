@@ -19,11 +19,11 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
 
-  private  final JWTutil jwTutil;
+  private  final JwtUtil jwTutil;
 
   private final customUserDetailService customUserDetailService;
 
-  public JwtAuthFilter(JWTutil jwTutil, customUserDetailService customUserDetailService) {
+  public JwtAuthFilter(JwtUtil jwTutil, customUserDetailService customUserDetailService) {
         this.jwTutil = jwTutil;
         this.customUserDetailService = customUserDetailService;
     }
@@ -57,9 +57,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-    }catch (Exception e) {
-            // Log the exception and allow unauthenticated requests to pass
-            System.err.println("JWT Authentication failed: " + e.getMessage());
+    } catch (Exception e) {
+            // JWT authentication failed - allow request to pass
         }
 
             // Continue the filter chain

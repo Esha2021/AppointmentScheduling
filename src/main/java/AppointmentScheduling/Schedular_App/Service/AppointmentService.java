@@ -33,8 +33,6 @@ public class AppointmentService {
 
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         ScheduleProvider provider = scheduleProviderRepository.findById(scheduleproviderId).orElseThrow(() -> new RuntimeException("Provider not found"));
-        //ScheduleProvider providerName = scheduleProviderRepository.findByScheduleProviderName(scheduleProviderName).orElseThrow(() -> new RuntimeException("Provider not found"));
-        System.out.println("Provider Name: " + provider.getScheduleProviderName());
 
 
         Appointment appointment = new Appointment();
