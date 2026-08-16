@@ -118,7 +118,7 @@
         - name: Check Build Status
           run: |
             if [[ "${{ needs.backend-build.result }}" == "failure" ]] || \
-               [[ "${{ needs.frontend-build.result }}" == "failure" ]] || then
+               [[ "${{ needs.frontend-build.result }}" == "failure" ]]; then
               
             
               echo "❌ CI/CD Pipeline Failed"
